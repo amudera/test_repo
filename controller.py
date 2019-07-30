@@ -25,7 +25,7 @@ def mainmenu(selection):
             if model.login_verify() == 'Login Successful':
                 secondary()
             else:
-                view.main_menu()
+                run()
         else:
             view.bad_input()
             run()
