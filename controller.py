@@ -14,11 +14,12 @@ def mainmenu(selection):
     while True:
         if selection == '3':
             model.save()
-            return
+            break
         elif selection == '1':
             model.create_account()
             model.gen_account()
             model.save()
+            run()
         elif selection == '2':
             model.login_verify()
             if model.login_verify() == 'Login Successful':
@@ -27,6 +28,7 @@ def mainmenu(selection):
                 view.main_menu()
         else:
             view.bad_input()
+            run()
 
 def secondary():
     view.logged_in()

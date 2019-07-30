@@ -11,17 +11,17 @@ PATH = os.path.dirname(__file__)
 DATA = "data.json"
 DATAPATH = os.path.join(PATH,DATA)
 
-master = {}
+main = {}
 accounts = {}
 
 def load():
-    global master
+    global main
     with open(DATAPATH, "r") as accounts_json:
-        master = json.load(accounts_json) ### error here 
+        main = json.load(accounts_json) 
 
 def save():
     with open(DATAPATH, 'w') as file_object:
-        json.dump(master, file_object, indent=2)
+        json.dump(main, file_object, indent=2)
 
 def create_account():
     print()
@@ -37,17 +37,17 @@ def create_account():
 def gen_account():
     ac_num = ''.join(str(random.randint(0,9)) for _ in range(5))
     ac_dict = {}
-    ac_dict[ac_num] = None
+    ac_dict[ac_num] = {}
     print("Your new account number is: " + ac_num)
-    ac_dict.update(accounts)
-    master.update(ac_dict)
-    return master
+    ac_dict[ac_num].update(accounts)
+    main.update(ac_dict) 
+    return main
 
 def login_verify():
         account_num = input("Account Number: ")
         pin_verify = input("PIN: ")
-        for account_num,pin_verify in master:
-            if account_num in master and master[account_num]["pin"] == pin_verify:
+        for account_num,pin_verify in main.items():
+            if account_num in main and main[account_num]["pin"] == pin_verify:
                 print('Login Successful') #could do a boolean and return true or false
         else:
                 print("Login failed")
