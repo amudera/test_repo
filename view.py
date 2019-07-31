@@ -13,14 +13,24 @@ def get_input():
     print("Please Pick an Option: ",end="")
     return input()
 
-def log_in():
-    print()
-    print("Account number: ")
-    print("PIN: ")
+def First():
+    return input("Please enter First Name: ")
+
+def Last():
+    return input("Please enter Last Name: ")
+
+def create_PIN():
+    return input("Please enter a new 4 digit PIN: ")
+
+def login_ac():
+    return input("Please enter your account number: ")
+
+def login_pin():
+    return input("Please enter your 4 Digit PIN: ")
 
 def bad_input():
     print()
-    print("ERROR! Incorrect iput ")
+    print("ERROR! INCORRECT INPUT!")
 
 def logged_in():
     print()
@@ -34,9 +44,13 @@ def get_secondinput():
         print("Your choice: ",end="")
         return input()
     
-def check_bal():
+def check_bal(balance):
          print()
-         print("Your Balance is: {} ")
+         print("Your Balance is: {}".format(balance))
+
+def new_bal(updated_balance):
+         print()
+         print("Your New Balance is: {}".format(updated_balance))
 
 def withdraw():
         print()

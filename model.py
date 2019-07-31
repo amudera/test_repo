@@ -12,7 +12,6 @@ DATA = "data.json"
 DATAPATH = os.path.join(PATH,DATA)
 
 main = {}
-accounts = {}
 
 def load():
     global main
@@ -23,18 +22,9 @@ def save():
     with open(DATAPATH, 'w') as file_object:
         json.dump(main, file_object, indent=2)
 
-def create_account():
-    print()
-    print("First Name: ")
-    accounts["First Name"] = input()
-    print("Last Name: ")
-    accounts["Last Name"] = input()
-    print("Please enter a 4 digit PIN: ")
-    accounts["pin"] = str(input())
-    accounts["Balance"] = float(0)
-    
-
-def gen_account():
+def create_account(first1,last1,pin1):
+    accounts = {"First Name:":first1,"Last Name:":last1,"pin":pin1,"Balance":float(0)}
+    accounts.update()
     ac_num = ''.join(str(random.randint(0,9)) for _ in range(5))
     ac_dict = {}
     ac_dict[ac_num] = {}
@@ -43,32 +33,27 @@ def gen_account():
     main.update(ac_dict) 
     return main
 
-def login_verify():
-        account_num = input("Account Number: ")
-        pin_verify = input("PIN: ")
-        for account_num,pin_verify in main.items():
-            if account_num in main and main[account_num]["pin"] == pin_verify:
-                print('Login Successful') #could do a boolean and return true or false
-        else:
-                print("Login failed")
+
+def login_verify(account_num,pin_verify):
+    if account_num in main and main[account_num]["pin"] == pin_verify: 
+        return True
+    else:
+        return False
 
 class Bankaccount:
-    def __init__(self,id,pin,balance=0):
-        self.id = id
-        self.pin = pin
+    def __init__(self,balance=0):
         self.balance = balance
-
-    def getId(self):
-        return self.id
  
-    def getBalance(self):
+    def getBalance(self,main,ac_num):
+        self.balance = main[ac_num]["Balance"]
         return self.balance
  
-    def withdraw(self, amount):
+    def withdrawal(self, amount):
         if self.balance - amount > 0:
                 self.balance -= amount
         else:
                 print("Insufficient Funds!")
  
-    def deposit(self, amount):
+    def depositor(self, amount):
         self.balance += amount
+
