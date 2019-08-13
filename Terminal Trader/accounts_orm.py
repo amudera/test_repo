@@ -1,15 +1,21 @@
 import sqlite3
+from orm import ORM
+from util import hash_password
+from positions_orm import Positions
+from util import get_price
 from pprint import pprint
+from trades_orm import Trades
 
-class Accounts:
+class Accounts(ORM):
+
     dbpath = ""
     tablename = "accounts"
-    fields = ['username','password','balance']
+    fields = ['username','password_hash','balance']
 
     def __init__(self, **kwargs):
         self.pk = kwargs.get("pk")
         self.username = kwargs.get("username")
-        self.password = kwargs.get("password")
+        self.password_hash = kwargs.get("password_hash")
         self.balance = kwargs.get("balance")
 
     def new_account(self,username,password):
@@ -36,5 +42,58 @@ class Accounts:
                 quit()
             else:
                 print("Login Successful")
+    
+    def get_position(self):
+        return Positions.all_from_where_clause("WHERE accounts_pk=?",(self.pk))
+
+    def get_position_for(self,ticker):
+        position = Positions.one_from_where_clause("WHERE ticker=? AND accounts_pk=?",(ticker,self.pk))
+        if position is None:
+            return Positions(ticker=ticker,accounts_pk=self.pk,shares=0)
+        else:
+            return position
+
+    def get_trades(self):
+        return Trades.all_from_where_clause("WHERE accounts_pk=? ORDER BY time=ASC",(self.pk,))
+
+    def trades_for(self,ticker):
+        trade = Trades.all_from_where_clause("WHERE ticker=? AND accounts_pk=? ORDER BY time=ASC",(ticker,self.pk))
+        if trade is None:
+            return None
+        else:
+            return trade 
+        
+    def buy(self,ticker,amount):
+        position = self.get_position_for(ticker)
+        price = get_price(ticker)
+        if price is None:
+            raise KeyError
+        notional = price * amount
+        trade = Trades(accounts_pk = self.pk, ticker=ticker,price=price,quantity=amount)
+        if self.balance >= notional:
+            self.balance -= notional
+            trade.save()
+            position.shares += int(amount)
+            position.save()
+            self.save()
+        else:
+            raise ValueError
+
+    def sell(self,ticker,amount):
+        position = self.get_position_for(ticker)
+        price = get_price(ticker)
+        if price is None:
+            raise KeyError
+        notional = abs(price * amount)
+        trade = Trades(accounts_pk = self.pk, ticker=ticker,price=price,quantity=amount)
+        if position.shares > amount:
+            self.balance += notional
+            trade.save()
+            position.shares -= abs(int(amount))
+            position.save()
+            self.save()
+        else:
+            raise ValueError
+
 
             

@@ -30,7 +30,7 @@ def schema(dbpath=DBPATH):
             quantity INTEGER,
             price FLOAT
             FOREIGN KEY(accounts_pk,ticker) REFERENCES (accounts_pk),
-            UNIQUE(accounts_pk,ticker)
+            UNIQUE(accounts_pk,ticker) 
         ); """
         cur.execute(SQL)
 
