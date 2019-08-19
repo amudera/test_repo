@@ -44,8 +44,9 @@ def logged_in_screen():
     print("4 Buy Stock")
     print("5 Sell Stock")
     print("6 Trade History")
-    print("7 Log Out")
-    print("8 Exit Application")
+    print("7 View API Key")
+    print("8 Log Out")
+    print("9 Exit Application")
 
 def account_positions(account):
         print()
@@ -80,6 +81,10 @@ def sell_successful(amount,ticker):
         print("Trade Confirmed")
         print("SOLD {} SHARES OF {}").format(amount,ticker)
 
+def deposit_money():
+        print()
+        return input("What sum would you like to deposit? ")
+
 def add_balance():
         print()
         return input("Please add balance: ")
@@ -87,6 +92,10 @@ def add_balance():
 def improper_balance():
         print()
         print("Incorrect balance input")
+
+def deposit_sucessful():
+        print()
+        print("Deposit Successful")
 
 def get_ticker():
         print()
@@ -115,3 +124,6 @@ def position_error():
 def no_position():
         print()
         print("You dont have a position in this stock")
+
+def api_key():
+        print("Please see your unique API")

@@ -26,7 +26,8 @@ def welcome_menu():
                 view.improper_balance()
 
             account = Accounts(username=username, balance=balance)
-            account.set_password(password) ######
+            account.set_password(password) 
+            account.generate_api_key()
             account.save()
             logged_in_homepage(account)
             return
@@ -49,7 +50,7 @@ def welcome_menu():
 def logged_in_homepage(account):
     while True:
         selection = view.logged_in_screen(Accounts.username, Accounts.balance)
-        if selection not in ["1","2","3","4","5","6","7","8"]:
+        if selection not in ["1","2","3","4","5","6","7","8","9"]:
             view.improper_selection()
             time.sleep(3)#delay codes execution by that many secs, waits 3 secs before executing next line of code
         
@@ -59,8 +60,12 @@ def logged_in_homepage(account):
             view.show_positions(positions)
         
         elif selection == '2':
-            view.get_money()
-            blance = Accounts.add_balance()
+            amount = view.deposit_money()
+            balance = Accounts.add_balance(amount)
+            if balance == ValueError:
+                view.improper_balance()
+            else:
+                view.deposit_successful()
             Accounts.save()
         
         elif selection == '3':
@@ -72,9 +77,9 @@ def logged_in_homepage(account):
             amount = view.get_quantity()
             buy = Accounts.buy(ticker,amount)
             if buy == ValueError:
-                view.balance_error
+                view.balance_error()
             elif buy == KeyError:
-                view.stock_error
+                view.stock_error()
             else: 
                 view.buy_successful(amount,ticker)     
             
@@ -83,9 +88,9 @@ def logged_in_homepage(account):
             amount = view.get_quantity()
             sell = Accounts.sell(ticker,amount)
             if sell == ValueError:
-                view.position_error
+                view.position_error()
             elif sell == KeyError:
-                view.stock_error
+                view.stock_error()
             else:
                 view.sell_successful(amount,ticker)            
 
@@ -109,9 +114,13 @@ def logged_in_homepage(account):
                 view.show_trades(trades)
 
         elif selection == '7':
+            view.api_key()
+            Accounts.show_api()
+        
+        elif selection == '8':
             view.welcome_screen()
 
-        elif selection == '8':
+        elif selection == '9':
             quit()
 
 

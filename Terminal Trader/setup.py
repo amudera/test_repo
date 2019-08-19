@@ -1,5 +1,5 @@
-from schema import schema
-from seed import seed_from_csv
+from data.schema import schema
+from data.seed import seed
 
 schema()
 seed()

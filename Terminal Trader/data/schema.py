@@ -15,7 +15,8 @@ def schema(dbpath=DBPATH):
             pk INTEGER PRIMARY KEY AUTOINCREMENT,
             username VARCHAR(10),
             password VARCHAR(10),
-            balance FLOAT
+            balance FLOAT,
+            api_key VARCHAR(128)
         ); """
         cur.execute(SQL)
 
